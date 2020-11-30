@@ -1,0 +1,58 @@
+<snippet>
+	<content><![CDATA[
+
+struct Sieve {//
+	int n;
+	vector<int> f, primes;
+	Sieve(int N ): n(N), f(N + 1) {//コンスタクタでNまでの素数列挙 以下に現れるxはN以下
+		f[0] = f[1] = -1;//factorList()のため
+		for (ll i = 2; i <= n; ++i) {
+			if (f[i]) continue;
+			primes.emplace_back(i);
+			f[i] = i;//素数は自分を保持
+			for (ll j = i * i; j <= n; j += i) {  //例えばi==7の時、7*5等は先に５の方で試してるから7*7以降、つまりi*i以降を試していけばいい
+				if (!f[j]) f[j] = i;//何かしらが代入されていない時は、f[j]の約数であるiを代入
+			}
+		}
+	}
+
+	bool isPrime(int x) { return (f[x] == x);}//印が素数自身ならば素数
+
+	vector<int> factors(int x) {//素因数リスト　重複あり ex)100==2*2*5*5
+		vector<int> res;
+		while (x != 1) {
+			res.emplace_back(f[x]);
+			x /= f[x];
+		}
+		return res;
+	}
+	set<int> factorList(int x) {//素因数の集合　ex)100..(2,5)
+		set<int> res;
+		while (x != 1) {
+			res.insert(f[x]);
+			x /= f[x];
+		}
+		return res;
+	}
+
+	vector<pair<ll, int>> factor(int x) {
+		vector<int> fl = factors(x); //ex)100...{2,2,5,5}
+		if (fl.size() == 0) return {};
+		vector<pair<ll, int>> res(1, PII(fl[0], 0));
+		for (int p : fl) {
+			if (res.back().first == p) {
+				res.back().second++;
+			} else {
+				res.emplace_back(p, 1);
+			}
+		}
+		return res;
+	}
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Sieve</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+</snippet>

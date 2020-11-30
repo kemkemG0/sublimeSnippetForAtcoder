@@ -1,0 +1,26 @@
+<snippet>
+	<content><![CDATA[
+struct UnionFind {
+	vector<int> d; //iが子ならd[i]は親のidでiが親ならd[i]は -サイズ
+	UnionFind(int n): d(n, -1) {}
+	int find(int x) {
+		if (d.at(x) < 0)return x;//親なら自分自身の番号を返す
+		else return d.at(x) = find(d.at(x)); //経路圧縮　メモ化
+	}
+	bool unite(int x, int y) { //voidでもいいが、くっつけられるか判定できた方が嬉しいときもある
+		x = find(x); y = find(y); //根同士をくっつけるため
+		if (x == y) return false;//統合できない(しない)
+		if (-d.at(x) < -d.at(y)) swap(x, y);
+		d.at(x)+= d.at(y); //親のサイズの更新 サイズが大きい方に小さい方を統合
+		d.at(y) = x;//yは親ではなくなったのでyの親をｘに設定
+		return true;//統合できた
+	}
+	int size(int x) {return -d.at(find(x));}
+	bool same(int x, int y) {return find(x) == find(y);}
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>UnionFind</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+</snippet>
