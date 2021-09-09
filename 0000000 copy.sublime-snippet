@@ -1,0 +1,11 @@
+<snippet>
+	<content><![CDATA[
+
+//ここにコード
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>呼び出すトリガー</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+</snippet>

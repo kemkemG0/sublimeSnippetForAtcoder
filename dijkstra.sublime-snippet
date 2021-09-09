@@ -1,0 +1,41 @@
+<snippet>
+	<content><![CDATA[
+
+/* dijkstra(G,s,dis)
+    入力：グラフ G, 開始点 s, 距離を格納する dis
+    計算量：O(|E|log|V|)
+    副作用：dis が書き換えられる
+*/
+using P = pair<ll, int>;
+struct edge {
+    ll to;
+    ll cost;
+};
+void dijkstra(const vector<vector<edge>>& G, int s, vector<ll>& dis) {
+    int N = G.size();
+    dis.resize(N, LLINF);
+    // 「仮の最短距離, 頂点」が小さい順に並ぶ
+    priority_queue<P, vector<P>, greater<P>> pq;
+    dis[s] = 0;
+    pq.emplace(dis[s], s);
+    while (!pq.empty()) {
+        P now = pq.top(); pq.pop();
+        int now_v = now.second;
+        // 最短距離で無ければ無視
+        if (dis[now_v] < now.first)continue;
+        for (auto && nxt : G[now_v]) {
+            // 最短距離候補なら priority_queue に追加
+            if (dis[nxt.to] > dis[now_v] + nxt.cost) {
+                dis[nxt.to] = dis[now_v] + nxt.cost;
+                pq.emplace(dis[nxt.to], nxt.to);
+            }
+        }
+    }
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dijkstra</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+</snippet>
